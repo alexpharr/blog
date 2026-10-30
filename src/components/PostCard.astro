@@ -1,0 +1,32 @@
+---
+import { formatDate, postUrl, type Post } from '../lib/posts';
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const date = formatDate(post.data.pubDate);
+---
+
+<li class="post-card">
+  <time datetime={date}>{date}</time>
+  <a href={postUrl(post)}>{post.data.title}</a>
+</li>
+
+<style>
+  .post-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: var(--space-l);
+    row-gap: var(--space-3xs);
+  }
+
+  time {
+    flex: 0 0 var(--date-column);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+</style>

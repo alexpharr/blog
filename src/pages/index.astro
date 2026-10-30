@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import { HOME_POST_LIMIT, SITE_INTRO } from '../consts';
+import { getPosts } from '../lib/posts';
+
+const posts = await getPosts();
+const recent = posts.slice(0, HOME_POST_LIMIT);
+---
+
+<BaseLayout>
+  <p class="intro">{SITE_INTRO}</p>
+
+  <h1 class="sr-only">Recent posts</h1>
+  {
+    recent.length > 0 ? (
+      <>
+        <PostList posts={recent} />
+        <p class="more">
+          <a href="/archive/">All posts →</a>
+        </p>
+      </>
+    ) : (
+      <p class="empty">No posts yet.</p>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .intro {
+    margin: 0 0 var(--space-2xl);
+  }
+
+  .more {
+    margin: var(--space-xl) 0 0;
+    font-size: var(--font-size-ui);
+  }
+
+  .empty {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+</style>

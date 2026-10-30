@@ -1,0 +1,306 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from './BaseLayout.astro';
+import { formatDate, postUrl, readingMinutes, tagUrl, type Post } from '../lib/posts';
+
+interface Props {
+  post: Post;
+  /** The next-older post, linked at the bottom ("← Title"). */
+  older?: Post;
+}
+
+const { post, older } = Astro.props;
+const { title, description, pubDate, updatedDate, tags, heroImage } = post.data;
+const published = formatDate(pubDate);
+const updated = updatedDate ? formatDate(updatedDate) : undefined;
+const minutes = readingMinutes(post.body);
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={heroImage?.src}
+  imageAlt={heroImage?.alt}
+  type="article"
+  publishedTime={pubDate}
+  modifiedTime={updatedDate}
+  tags={tags}
+>
+  <article class="prose">
+    <h1 class="title">{title}</h1>
+    <p class="meta">
+      <time datetime={published}>{published}</time>
+      <span aria-hidden="true">·</span>
+      <span>{minutes} min read</span>
+      {
+        updated && (
+          <>
+            <span aria-hidden="true">·</span>
+            <span>
+              updated <time datetime={updated}>{updated}</time>
+            </span>
+          </>
+        )
+      }
+      {
+        tags.length > 0 && (
+          <>
+            <span aria-hidden="true">·</span>
+            <span class="tags">
+              <span class="sr-only">Tags:</span>
+              {tags.map((tag) => (
+                <a href={tagUrl(tag)}>{tag}</a>
+              ))}
+            </span>
+          </>
+        )
+      }
+    </p>
+
+    {
+      heroImage && (
+        <figure class="hero">
+          <Image
+            src={heroImage.src}
+            alt={heroImage.alt}
+            widths={[608, 1216]}
+            sizes="(min-width: 40.5rem) 38rem, calc(100vw - 2.5rem)"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </figure>
+      )
+    }
+
+    <slot />
+  </article>
+
+  <nav class="post-nav" aria-label="More posts">
+    {older && <a href={postUrl(older)}>← {older.data.title}</a>}
+    <a class="all-posts" href="/archive/">All posts →</a>
+  </nav>
+</BaseLayout>
+
+<style>
+  /* ── Title & meta line ─────────────────────────────────── */
+  .title {
+    margin: 0 0 var(--space-xs);
+    font-size: var(--font-size-h1);
+    line-height: var(--line-height-h1);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-h1);
+  }
+
+  .prose .meta {
+    margin: 0 0 var(--space-xl);
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--space-inline-sep);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+
+  .tags {
+    display: inline-flex;
+    flex-wrap: wrap;
+    column-gap: var(--space-inline-list);
+  }
+
+  .hero {
+    margin: 0 0 var(--prose-space-figure);
+  }
+
+  .hero :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ── Previous / all posts ──────────────────────────────── */
+  .post-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-s) var(--space-row-gap-nav);
+    margin-top: var(--space-3xl);
+    font-size: var(--font-size-ui);
+  }
+
+  .all-posts {
+    margin-left: auto;
+  }
+
+  /* ── Rendered Markdown ─────────────────────────────────── */
+  .prose :global(a:visited) {
+    color: var(--color-link-visited);
+  }
+
+  .prose :global(a:visited:hover) {
+    color: var(--color-link-hover);
+  }
+
+  .prose :global(p) {
+    margin: 0 0 var(--prose-space-p);
+  }
+
+  .prose :global(h2) {
+    font-size: var(--font-size-h2);
+    line-height: var(--line-height-h2);
+    font-weight: var(--font-weight-semibold);
+    margin: var(--prose-space-h2-before) 0 var(--prose-space-h2-after);
+  }
+
+  .prose :global(h3) {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-h3);
+    font-weight: var(--font-weight-semibold);
+    margin: var(--prose-space-h3-before) 0 var(--prose-space-h3-after);
+  }
+
+  .prose :global(:is(ul, ol)) {
+    margin: 0 0 var(--prose-space-p);
+    padding-left: var(--prose-indent-list);
+  }
+
+  .prose :global(li) {
+    margin: 0 0 var(--prose-space-li);
+  }
+
+  .prose :global(li > :is(ul, ol)) {
+    margin: var(--prose-space-li) 0 0;
+  }
+
+  .prose :global(li > p) {
+    margin: 0;
+  }
+
+  .prose :global(li::marker) {
+    color: var(--color-text-muted);
+  }
+
+  .prose :global(blockquote) {
+    margin: var(--prose-space-quote) 0;
+    padding: 0 0 0 var(--prose-indent-quote);
+    font-style: italic;
+    color: var(--color-text-quote);
+  }
+
+  .prose :global(blockquote p) {
+    margin: 0;
+  }
+
+  .prose :global(blockquote p + p) {
+    margin-top: var(--prose-space-p);
+  }
+
+  .prose :global(code) {
+    font-size: var(--font-size-code-inline);
+    background: var(--color-code-inline-bg);
+    padding: var(--prose-code-inline-padding);
+    border-radius: var(--radius-s);
+  }
+
+  .prose :global(pre) {
+    margin: var(--prose-space-pre) 0;
+    padding: var(--prose-pre-padding);
+    background: var(--color-code-bg);
+    border-radius: var(--radius-m);
+    overflow-x: auto;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-code);
+    white-space: pre;
+  }
+
+  .prose :global(pre code) {
+    background: none;
+    padding: 0;
+    font-size: inherit;
+    border-radius: 0;
+  }
+
+  .prose :global(figure) {
+    margin: var(--prose-space-figure) 0;
+  }
+
+  .prose :global(figure img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .prose :global(figcaption) {
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    margin-top: var(--prose-space-caption);
+  }
+
+  .prose :global(hr) {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: var(--space-xl) 0;
+  }
+
+  /* Tables are not in the design; styled with its hairline and type scale. */
+  .prose :global(.table-scroll) {
+    margin: var(--prose-space-pre) 0;
+    overflow-x: auto;
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-md);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .prose :global(:is(th, td)) {
+    padding: var(--prose-cell-padding);
+    border-bottom: var(--border-hairline);
+    text-align: left;
+    vertical-align: baseline;
+  }
+
+  .prose :global(:is(th, td):first-child) {
+    padding-left: 0;
+  }
+
+  .prose :global(:is(th, td):last-child) {
+    padding-right: 0;
+  }
+
+  .prose :global(th) {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .prose :global(sup) {
+    line-height: 0;
+    font-size: var(--font-size-sup);
+    padding-left: var(--prose-sup-nudge);
+  }
+
+  .prose :global(sup a) {
+    text-decoration: none;
+  }
+
+  /* Footnotes section generated from [^1] syntax. */
+  .prose :global(.footnotes) {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-m);
+    border-top: var(--border-hairline);
+    font-size: var(--font-size-md);
+    color: var(--color-text-footnote);
+  }
+
+  .prose :global(.footnotes ol) {
+    padding-left: var(--prose-indent-footnotes);
+  }
+
+  .prose :global(.footnotes p) {
+    margin: 0;
+  }
+
+  .prose :global(.footnotes a[data-footnote-backref]) {
+    text-decoration: none;
+  }
+</style>

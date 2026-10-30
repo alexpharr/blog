@@ -1,0 +1,32 @@
+---
+import { AUTHOR, EMAIL } from '../consts';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <span>© {year} {AUTHOR}</span>
+  <span class="links">
+    <a href="/rss.xml">RSS</a>
+    {EMAIL && <a href={`mailto:${EMAIL}`}>Email</a>}
+  </span>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--space-5xl);
+    padding-top: var(--space-l);
+    border-top: var(--border-hairline);
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2xs) var(--space-l);
+  }
+
+  .links {
+    display: flex;
+    gap: var(--space-m);
+  }
+</style>

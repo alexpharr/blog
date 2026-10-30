@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageTitle from '../components/PageTitle.astro';
+---
+
+<BaseLayout title="Page not found" description="There is no page at this address." noindex>
+  <PageTitle title="Page not found" />
+  <p class="body">
+    There is nothing at this address. Try the <a href="/">home page</a> or the
+    <a href="/archive/">archive</a>.
+  </p>
+</BaseLayout>
+
+<style>
+  .body {
+    margin: var(--space-l) 0 0;
+  }
+</style>

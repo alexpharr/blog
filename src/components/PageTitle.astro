@@ -1,0 +1,31 @@
+---
+/**
+ * Page heading as used on the archive, tag and 404 pages: a large title and
+ * an optional grey line underneath ("Ten posts, newest first.").
+ */
+interface Props {
+  title: string;
+  lede?: string;
+}
+
+const { title, lede } = Astro.props;
+---
+
+<h1>{title}</h1>
+{lede && <p class="lede">{lede}</p>}
+<slot />
+
+<style>
+  h1 {
+    margin: 0 0 var(--space-s);
+    font-size: var(--font-size-h1);
+    line-height: var(--line-height-h1);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-h1);
+  }
+
+  .lede {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+</style>

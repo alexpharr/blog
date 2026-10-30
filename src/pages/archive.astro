@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageTitle from '../components/PageTitle.astro';
+import PostList from '../components/PostList.astro';
+import { getPosts, groupByYear, postCountLabel } from '../lib/posts';
+
+const posts = await getPosts();
+const years = groupByYear(posts);
+---
+
+<BaseLayout title="Archive" description="Every post, newest first.">
+  <PageTitle title="Archive" lede={postCountLabel(posts.length)} />
+
+  {
+    years.map(([year, yearPosts]) => (
+      <section aria-labelledby={`y${year}`}>
+        <h2 id={`y${year}`}>{year}</h2>
+        <PostList posts={yearPosts} />
+      </section>
+    ))
+  }
+</BaseLayout>
+
+<style>
+  h2 {
+    margin: var(--space-2xl) 0 var(--space-m);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-muted);
+  }
+</style>

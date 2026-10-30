@@ -1,0 +1,56 @@
+---
+import { SITE_TITLE } from '../consts';
+
+const links = [
+  { href: '/archive/', label: 'Archive' },
+  { href: '/rss.xml', label: 'RSS' },
+];
+
+const current = Astro.url.pathname.replace(/\/?$/, '/');
+---
+
+<header class="site-header">
+  <a class="site-title" href="/">{SITE_TITLE}</a>
+  <nav aria-label="Main">
+    {
+      links.map(({ href, label }) =>
+        href === current ? (
+          <a href={href} aria-current="page">
+            {label}
+          </a>
+        ) : (
+          <a href={href}>{label}</a>
+        ),
+      )
+    }
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-2xs) var(--space-l);
+    margin-bottom: var(--space-4xl);
+  }
+
+  .site-title {
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: var(--font-weight-semibold);
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-m);
+    font-size: var(--font-size-ui);
+  }
+
+  [aria-current='page'] {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+</style>
