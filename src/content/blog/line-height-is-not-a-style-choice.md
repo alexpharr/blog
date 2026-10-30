@@ -16,6 +16,9 @@ The Web Content Accessibility Guidelines treat spacing as something readers must
 2. space after paragraphs to at least 2 times the font size,
 3. letter spacing to 0.12 times the font size, and
 4. word spacing to 0.16 times the font size.
+5. Making a change to test
+
+A separate line just to test changes.
 
 That criterion is about not getting in the way of the reader’s own settings. The stricter [1.4.8, Visual Presentation](https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation.html) goes further and asks for line spacing of at least one and a half within paragraphs by default.
 
