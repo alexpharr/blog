@@ -9,11 +9,11 @@ heroImage:
 draft: false
 ---
 
-Sitting, we are told, is the new smoking. Like most slogans that travel well, it is half true. The office worker spends more of the day in a chair than in bed, and the body was not built for that arrangement.
+You've probably heard that sitting is the new smoking, a claim that sounds like slogan invented to sell standing desks, but which, annoyingly, isn't entirely wrong. Most of us now spend more of our waking hours in a chair than anywhere else, an arrangement which our bodies were not built for.
 
-The chair is probably killing you. Slowly, politely, and with adjustable lumbar support.
+It's true, your chair is probably killing you. Though, to be fair, so is everything else, just at varying speeds.
 
-But the cure on offer, the perfect chair and the perfect posture, misreads the illness. The problem was never quite how we sit. It is how long we sit that way.
+The usual response is to go hunting for the perfect chair and the perfect posture, and to feel frustrated about never quite achieving either. But after ten years of recommending ergonomic chairs to people, I've come to to realize the whole thing rests on a misunderstanding. The problem isn't really how we sit. It's how long we sit that way.
 
 ## There is no good chair
 
